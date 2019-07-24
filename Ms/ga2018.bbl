@@ -51,6 +51,11 @@ Harriot, M.: Thousands of {Black} {Votes} in {Georgia} {Disappeared}. The Root
   (2019),
   \url{https://www.theroot.com/exclusive-thousands-of-black-votes-in-georgia-disappea-1832472558}
 
+\bibitem{herron2003overvoting}
+Herron, M.C., Sekhon, J.S.: Overvoting and representation: An examination of
+  overvoted presidential ballots in broward and miami-dade counties. Electoral
+  Studies  \textbf{22}(1),  21--47 (2003)
+
 \bibitem{hursti_critical_2005}
 Hursti, H.: Critical security issues with {D}iebold optical scan design. Tech.
   rep., Black Box Voting (2005)
@@ -101,10 +106,6 @@ Niesse, M., Prabhu, M.T., Elias, J.: Voting precincts closed across {Georgia}
   since election oversight lifted. The Atlanta Journal-Constitution  (2018),
   \url{https://www.myajc.com/news/state--regional-govt--politics/voting-precincts-closed-across-georgia-since-election-oversight-lifted/bBkHxptlim0Gp9pKu7dfrN/}
 
-\bibitem{norden_brennan_2015}
-Norden, L., Famighetti, C.: America's voting machines at risk. Tech. rep.,
-  Brennan Center for Justice (2015)
-
 \bibitem{noauthor_SAFE_2019}
 Party, G.D.: Breaking: {Democratic} {Party} of {Georgia} {Calls} on {SAFE}
   {Commission} to {Delay} {Vote} {Following} {News} {That} {Voting} {Machine}
@@ -115,6 +116,10 @@ Party, G.D.: Breaking: {Democratic} {Party} of {Georgia} {Calls} on {SAFE}
 Peha, J.: Touch-and-{Go} {Elections}: {The} perils of electronic voting. The
   Nation  (2006),
   \url{https://www.thenation.com/article/touch-and-go-elections-perils-electronic-voting/}
+
+\bibitem{perez18}
+Perez, E., Miller, G.A.: Georgia {State} {Election} {Technology} {Acquisition}:
+  {A} {Reality} {Check}. Tech. rep., OSET Institute (2018)
 
 \bibitem{riley_russian_2017}
 Riley, M., Robertson, J.: Russian {Hacks} on {U}.{S}. {Voting} {System} {Wider}
@@ -139,10 +144,22 @@ Stark, P.B.: Ballot-marking devices ({BMDs}) are not secure election technology
 \bibitem{shelby_holder_2013}
 {Supreme Court of the United States}: Shelby {County} v. {Holder} (2013), 12-96
 
+\bibitem{tomz2003does}
+Tomz, M., van Houweling, R.P.: How does voting equipment affect the racial gap
+  in voided ballots? American Journal of Political Science  \textbf{47}(1),
+  46--60 (2003)
+
 \bibitem{torres_federal_2016}
 Torres, K.: Federal lawsuit alleges {Georgia} blocked thousands of minority
   voters. The Atlanta Journal-Constitution  (2016),
   \url{https://www.myajc.com/news/state--regional-govt--politics/federal-lawsuit-alleges-georgia-blocked-thousands-minority-voters/EKb979oRoBe4yJ3Uo1nDfP/}
+
+\bibitem{penn_sos_2018}
+Torres, R.: Report {Concerning} the {Examination} {Results} of {Election}
+  {Systems} and {Software} {EVS} 6021 with {DS200} {Precinct} {Scanner},
+  {DS450} and {DS850} {Central} {Scanners}, {ExpressVote} {HW} 2.1 {Marker} and
+  {Tabulator}, {ExpressVote} {XL} {Tabulator} and {Electionware} {EMS}. Tech.
+  rep., Commonwealth of Pennsylvania Department of State (2018)
 
 \bibitem{curling_kemp_2018}
 {United States District Court for the Northern District of Georgia, Atlanta
