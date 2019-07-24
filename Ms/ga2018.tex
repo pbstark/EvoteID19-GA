@@ -1,0 +1,788 @@
+%\documentclass[12pt]{article}
+\documentclass[runningheads]{llncs}
+
+%\bibliographystyle{plainnat}
+\bibliographystyle{splncs04}
+\usepackage{graphicx}
+\usepackage{amssymb,amsmath,color}
+\usepackage{chronosys}
+\usepackage[breaklinks=true]{hyperref}
+\renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\usepackage[anythingbreaks]{breakurl}
+%\usepackage[round]{natbib}
+%\usepackage{amsthm}
+%\usepackage{algorithm}
+%\usepackage{algorithmicx}
+%\usepackage[noend]{algpseudocode}
+\newtheorem{thm}{Theorem}
+%\newtheorem{definition}{Definition}
+
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\ben}{\begin{enumerate}}
+\newcommand{\een}{\end{enumerate}}
+
+\newcommand{\mc}[1]{\ensuremath{\mathcal{#1}}}
+\newcommand{\mb}[1]{\ensuremath{\mathbb{#1}}}
+\newcommand{\ul}[1]{\ensuremath{\underline{#1}}}
+\newcommand{\RM}{\emph{RM}}
+\newcommand{\A}{\emph{A}}
+\newcommand{\B}{\emph{B}}
+\newcommand{\C}{\emph{C}}
+\newcommand{\EE}{\bb{E}}
+\newcommand{\PP}{\bb{P}}
+\newcommand{\bpi}{\bar{\pi}}
+\newcommand{\bp}{\bar{p}}
+
+\newcommand{\comment}[1]{\textcolor{red}{\sc #1}}
+
+% to squish paragraphs
+\raggedbottom
+
+
+\title{Election Integrity and Electronic Voting Machines in 2018 Georgia, USA}
+
+\author{
+   Kellie Ottoboni\inst{1}\orcidID{0000-0002-9107-3402} \and
+   Philip B.~Stark\inst{1}\orcidID{0000-0002-3771-9604}
+}
+%\authorrunning{K.~Ottoboni et al.}
+%\titlerunning{Election integrity and e-voting in Georgia}
+
+\institute{
+Department of Statistics, University of California, Berkeley, CA, USA
+}
+
+\date{Version: \today}
+
+\begin{document}
+\maketitle
+
+
+\begin{abstract}
+Direct recording electronic (DRE) voting systems have been shown time and time again to be vulnerable to hacking and malfunctioning.
+Despite mounting evidence that DREs are unfit for use, some states in the U.S. continue to use them for local, state, and federal elections.
+Georgia uses DREs exclusively, among many practices that have made its elections unfair and insecure.
+We give a brief history of election security and integrity in Georgia from the early 2000s to the 2018
+election.
+Nonparametric permutation tests give strong evidence
+that something caused DREs not to record a substantial number of votes in this election.
+The undervote rate in the Lieutenant Governor's race was far higher for voters who used DREs than for voters who used paper ballots.
+Undervote rates were strongly associated with ethnicity, with higher undervote rates
+in precincts where the percentage of Black voters was higher.
+There is specific evidence of DRE malfunction, too: one of the seven DREs in the Winterville
+Train Depot polling place had results that appear to be ``flipped'' along party lines.
+None of these associations or anomalies can reasonably be ascribed to chance.
+\keywords{Permutation testing, anomaly detection, DREs}
+\end{abstract}
+
+\noindent
+\textbf{Acknowledgements.}
+We are grateful to Marilyn Marks and Jordan Wilkie for helpful conversations and suggestions.
+
+%\begin{quote}
+%\emph{Georgia is the Georgia of elections. Unless it's the Florida of elections. No, that's Florida.}
+%\end{quote}
+
+\section{Introduction}
+
+The state of Georgia was a focal point in the civil rights movement of the twentieth century.
+It also has a history of election problems:
+systematic voter suppression,
+voting machines that are vulnerable to undetectable security breaches,
+and serious security breaches of their data systems.
+
+The 2018 midterm election returned Georgia to the national spotlight.
+Civil rights groups alleged that then Secretary of State Brian Kemp---who was running for Governor against Stacey Abrams, a Black woman---closed polling places, deleted voters from the rolls, and challenged
+voter signatures---disproportionately in Black neighborhoods \cite{harnik_officials_2018,nadler_voting_2018,niesse_voting_2018}.
+A federal lawsuit against the Secretary of State demanded that Georgia replace 
+paperless direct recording electronic (DRE) voting machines with optically scanned voter-marked paper ballot
+(opscan) voting systems \cite{curling_kemp_2018}.
+While the judge accepted the plaintiffs' argument that DREs (and Georgia's election management)
+have serious security problems, defendants successfully argued
+that they were unable to replace their equipment in time for the election.
+Ultimately, in-person voting in Georgia's 2018 election was on DREs.
+
+The 2018 election produced anomalous results that could have been caused 
+by malfunctioning, misprogrammed, or hacked election technology, including DREs.
+The accuracy of DRE results cannot be checked (for instance
+by a risk-limiting audit)
+because the DREs used in Georgia do not produce a voter-verifiable paper record.
+There has been no forensic investigation of the DREs used in the 2018 election, although the (continuing)
+suit seeks to conduct one.
+
+This paper begins with a short history of recent election integrity issues in Georgia.
+We summarize known security flaws of DRE voting systems and
+what took place in the months leading up the 2018 election.
+We analyze public election results and poll tapes photographed by
+a volunteer, finding strong statistical evidence that DREs were the source of these anomalies:
+that something caused DREs to miss votes in the Lieutenant Governor's
+contest and to ``flip'' votes for one party into votes for another.
+%\begin{figure}
+%\label{fig:georgia_timeline}
+%\tiny
+%\startchronology[startyear=2001,stopdate=false,height=.5ex]
+%  \chronoevent[markdepth=-50pt, textwidth=3cm]{2002}{HAVA passes, setting voting system standards and providing states funds to upgrade}
+%  \chronoevent[markdepth=60pt, textwidth=4cm]{2004}{Diebold CEO promises to ``deliver votes'' to Bush}
+%  \chronoevent[textwidth=3cm]{2002}{GA signs exclusive contract with Diebold to use their DREs}
+%  \chronoevent[markdepth=-25pt, textwidth=3cm]{2006}{State election director leaves to work for Diebold}
+%  \chronoevent[textwidth=4cm]{2007}{CA Top-to-Bottom Review and Ohio's EVEREST Report denounce DREs}
+%  \chronoevent[markdepth=-60pt, textwidth=4cm]{2010}{Kemp's first ``exact match'' law passes}
+%  \chronoevent[textwidth=4cm]{2013}{Shelby County v. Holder removes sections of the Voting Rights Act}
+%  \chronoevent[markdepth=-80pt, textwidth=4cm]{2017}{The first DEFCON Voting Machine Hacking Village reveals more DRE vulnerabilities}
+%  \chronoevent[markdepth=-40pt, textwidth=4cm]{2016}{Logan Lamb discovers security vulnerabilities at CES}
+%  \chronoevent[markdepth=100pt, textwidth=4cm]{2018}{Curling v. Kemp ruling allows paper ballots for the next election}
+%  \chronoevent[markdepth=40pt, textwidth=4cm]{2017}{Extent of CES security breach becomes public; Curling v. Kemp filed; CES wipes servers}
+%\stopchronology
+%
+%\caption{Timeline of events pertaining to the use of DREs in Georgia since HAVA}
+%\end{figure}
+
+\section{DRE Voting Machines}
+Congress passed the Help America Vote Act (HAVA) in 2002 after the problems in
+Florida in the 2000 presidential election.
+HAVA requires states to allow provisional voting and to build statewide voter registration databases,
+and provided funds for states to upgrade voting systems for accessibility.
+To receive funding, states were required to replace punchcard and lever voting systems 
+and to provide at least one
+accessible voting machine per polling place \cite{jones_broken_2012}.
+
+Two types of systems were on the market: optical
+scanners (opscan), which primarily used hand-marked paper ballots, and DREs.
+%Opscan systems can be either precinct count (PCOS) or central count (CCOS).
+DREs eliminate the need to print and store paper ballots,
+can present ballots in multiple languages,
+and satisfied the accessibility
+requirement \cite{jones_broken_2012}.\footnote{%
+  There is ample evidence that the systems are not very usable in practice by voters
+  with disabilities \cite{penn_sos_2018}, yet they satisfy the legal requirement.
+}
+DREs and in-precinct opscan systems also make it easier to report results faster than central opscan systems.
+While HAVA only required one accessible machine per polling place,
+some states opted to use DREs exclusively \cite{zetter_crisis_2018}.
+In 2002, four voting machine manufacturers offered DREs: Diebold Election Systems, 
+Election Systems and Software (ES\&S), Hart InterCivic, and Sequoia Voting Systems.
+This paper focuses on Diebold (now Premier), the lone DRE provider in Georgia.
+
+In the following year, newly-adopted DREs caused serious problems.
+In the 2002 Florida primaries, some machines in Miami-Dade county failed to turn on,
+creating long lines that prevented some would-be voters from voting.
+In New Mexico, faulty programming caused machines to drop a quarter of the votes.
+In Virginia, the software on 10 machines caused one vote to be subtracted for every 100 votes
+cast for a particular candidate \cite{wofford_how_2016}.
+%It was shown that faulty programming of ballot layouts can cause votes intended for one
+%candidate to be recorded as votes for another candidate \cite{norden_brennan_2015}.
+%Numerous examples of DRE failures have continued to accumulate \cite{curling_kemp_amicus_2018}.
+
+In 2007, studies sponsored by the Secretaries of State of California (the Top-to-Bottom Review, TTBR) and Ohio (the EVEREST study) gave conclusive 
+evidence that the DREs on the market had fundamental security flaws.
+The TTBR found physical and technological security flaws with Premier Election Systems' (formerly Diebold) DREs,
+including vulnerabilities that would allow someone to install malicious software that records votes incorrectly or miscounts them;
+susceptibility to viruses that propagate from machine to machine;
+unprotected information linked to individual votes that could compromise ballot anonymity;
+access to the voting system server software, allowing an attacker to corrupt the election management system database;
+``root access'' to the voting system, allowing attackers to change the settings of any device on the network;
+and numerous physical security holes that would allow an attacker to disable parts of the device using standard office tools \cite{TTBR07}.
+EVEREST found that the software for Premier DREs was ``unstable'' and lacked ``sound software and security engineering practices'' \cite{everest07}. 
+California decertified DREs from Premier, Hart InterCivic, and Sequoia, and the EVEREST study prompted Ohio to move to optical scanners.
+
+White-hat hackers have found even more security flaws.
+In 2005 and 2006, Finnish computer scientist Harri Hursti demonstrated that 
+Diebold's optical scanners could be hacked to change vote totals,
+and uncovered security flaws with Diebold's AccuVote-TSx machines that render
+``the voting terminal incurably compromised'' \cite{hursti_critical_2005,hursti_critical_2006}.
+In 2017, the annual DEF CON hacker conference held a ``Voting Village''
+and supplied participating hackers with over 25 pieces of election equipment used in the United States.
+While EVEREST restricted the types of hacks that could be deployed against the machines,
+there were no such restrictions at DEF CON. 
+Within minutes, hackers with little prior knowledge of voting systems penetrated several DREs,
+including the Premier AccuVote-TSx used in Georgia.
+They uncovered serious hardware vulnerabilities, including chips installed in sockets
+instead of being soldered in place to prevent removal and tampering \cite{blaze17}.
+The Voting Village has become a regular part of DEF CON as voting system vulnerabilities persist:
+the organizers reported in 2018, ``while, on average, it takes about six minutes to vote, machines in at least 15 states can be hacked with a pen in two minutes'' \cite{blaze18}.
+
+Security experts recommend that jurisdictions using DREs conduct forensic audits both before and after 
+every election.
+An examination of the software and machines done by an independent, neutral party might detect tampering, bugs, or hacking,
+and would help discourage malicious attacks \cite{curling_kemp_amicus_2018}. % PBS supplemental testimony
+(However, forensic investigation is not guaranteed to detect all hacking: for instance,
+malware can be programmed to erase itself after doing its damage.)
+But historically, it has been illegal to examine voting machine software because it is considered proprietary information \cite{peha_touch-and-go_2006}.
+Without a forensic audit or a reliable paper trail against which 
+to check reported results, there is no way to know whether a DRE accurately captured and tallied votes.
+
+To make DREs more secure, printers can be added to create a ``voter-verifiable paper audit trail'' (VVPAT)
+displayed behind glass,
+so the voter can check whether their vote was cast as intended.
+The paper record can be used in a post-election audit,
+and serves as a back-up in case the device's electronic memory fails.
+The NIST Auditability Working Group found that the only satisfactory way to audit DREs is with a trustworthy paper record such as a VVPAT \cite{nist_auditability_2015}.
+
+However, VVPATs can be compromised.
+If the printer malfunctions, the paper record is incomplete.
+VVPATs are difficult to audit: 
+they are typically printed on continuous, flimsy, uncut rolls of paper, which need
+to be unrolled and segmented to count votes.
+Most VVPATs are thermal paper, which degrades quickly when exposed
+to heat, light, human touch \cite{nist_auditability_2015}, or household chemicals \cite{TTBR07}.
+
+\emph{Verifiable} does not imply \emph{verified}:
+voters might not check a VVPAT effectively or at all.
+Research has shown that voters don't review their selections effectively.
+Voters often walk away from DREs before an electronic review screen is displayed.
+Errors in votes occur at the same rate whether a review screen is shown or not.
+%In experiments where contests were added to or removed from ballots, 
+%only 32\% of study participants noticed the change on the review screen.
+In experiments where the wrong candidate was marked on an electronic review screen, 
+only 37\% of study participants noticed the error on the review screen,
+though 95\% reported that they had checked their ballot either somewhat or very carefully \cite{everett_usability_2007}.
+A report by the Pennsylvania State Department found that when voters were shown VVPATs displayed behind glass, the glare and edges of the glass cage obstructed their selections \cite{penn_sos_2018}.
+VVPATs may not reflect voter intent, even if voters claim to review them.
+
+Many states have been phasing out paperless DREs.
+In 2006, nearly 40\% of voters used DREs to cast their vote.
+In 2016, 28 states used DREs in some capacity, 
+but most jurisdictions had some paper record, either opscan or an electronic method with a paper backup \cite{wofford_how_2016}. 
+Only five states still use paperless DREs exclusively: 
+Delaware, Georgia, Louisiana, New Jersey, and South Carolina.
+
+\section{Voter Suppression in Georgia}
+
+Georgia faced heightened scrutiny under the Voting Rights Act of 1965
+due to a history of discrimination in elections.
+Sections 4(b) and 5 of the 1965 Voting Rights Act required jurisdictions with prior evidence of racial discrimination to get ``preclearance''
+from the federal government before changing their election policies.
+In 2013, the Supreme Court ruled in \emph{Shelby County v. Holder}
+that these sections
+were unconstitutional because they placed undue burden on some states based on outdated evidence of 
+discrimination against minority voters \cite{shelby_holder_2013}.
+
+The ruling revitalized efforts to 
+disenfranchise minority voters:
+without federal oversight, some states that were previously subject to the preclearance rule of the Voting Rights Act reinstated some discriminatory policies.
+States began to close polling places and create stricter voter registration laws.
+Previously, counties and states would have had to show that these changes would not differentially disenfranchise minority voters.
+After \emph{Shelby County v. Holder},  
+Arizona, Louisiana, and Texas made changes that
+affect a large number of registered voters, disproportionately Black and Latino \cite{pew_polling_2018}.
+
+Strategically closing polling places can reduce voter turnout for specific demographic groups.
+It can force voters to travel farther to vote and create long lines in remaining polling places.
+Since the ruling, nearly a thousand polling places in the United States have been closed,
+many which served African American communities \cite{pew_polling_2018}. 
+Since 2012, election officials in Georgia have closed 214 precincts---nearly 8\% of the state's polling 
+places \cite{niesse_voting_2018}.
+Officials claim that consolidating low-turnout polling places is purely a cost-saving measure \cite{whitesides_polling_2016}.
+However, 39 of the 159 counties in Georgia where polling places were closed have poverty rates
+above the state average and 30 of them served significant African American populations \cite{niesse_voting_2018}.
+These closures would not have been permissible prior to 2013 under the Voting Rights Act's preclearance rule.
+
+%Polling place closures in Georgia have attracted attention from the national media.
+%In August 2018, Randolph County debated a proposal to close seven of its nine polling places,
+%put forth by an independent consultant endorsed by then Secretary of State Kemp.
+
+%An independent consultant endorsed by Secretary of State Kemp suggested the proposal,
+%which cited unresolved ADA compliance issues and low turnout as reasons to close the polling places.
+%Civil rights groups across the country opposed the proposal as a blatant attempt to disenfranchise minority voters:
+%Randolph County has around 7000 registered voters and is 61\% African American.
+%Ultimately, the county elections board voted it down, 
+%but the debate brought the broader issue of Georgia's voter suppression efforts into the spotlight \cite{harnik_officials_2018}.
+
+Under Secretary of State Kemp, over 1.4 million voter registrations were 
+cancelled in ``routine maintenance'' of the voter rolls,
+eliminating those marked inactive according to the law.
+Kemp implemented the first ``exact match'' law in 2010 with preclearance from the federal government, requiring a name on a registration application
+to exactly match the voter's legal name.
+The law made it harder for voters whose registrations were removed to get back on the voter rolls.
+The law was dismantled after it was found unconstitutional in 2016 \cite{torres_federal_2016}.
+It was replaced in 2017 by a new exact match law.
+Any discrepancy between the name on the application and legal name---as innocuous as a missing hyphen---renders the registration ``pending.''
+%Applicants have 26 months to amend their applications, during which time
+%they are eligible to vote.
+Civil rights groups argue that, though they are eligible,
+having a pending application discourages people from voting.
+Over 53,000 voter registration applications were pending leading up to November 2018.
+Nearly 70\% of pending applications were from Black voters, 
+more than double the 32\% Black population percentage in the state
+ \cite{nadler_voting_2018}.
+
+Kemp denies he has attempted to suppress minority voting, claiming that the decision
+to close a precinct is up to county election officials.
+However, in 2015 his office provided a document giving county officials guidance on why and how 
+to close polling places \cite{niesse_voting_2018}.
+Kemp blames the racial disparity in pending voter registration applications is on sloppy voter registration efforts and poorly trained canvassers, 
+in particular the New Georgia Project, a voter registration group (founded by Kemp's gubernatorial opponent 
+Stacey Abrams) that targeted African American voters and used primarily paper registration forms \cite{nadler_voting_2018}.
+
+\section{Georgia After HAVA}
+Georgia was the first state to adopt DREs statewide in the wake of HAVA:
+in November 2002, just days after HAVA was passed,
+the state signed a \$54 million contract with Diebold Election Systems
+to use the AccuVote-TS/TSx DREs \cite{zetter_crisis_2018}. 
+
+During the summer of 2002, Diebold began preparing more than 20,000 DREs to 
+be used in Georgia for the November election.
+A former Diebold employee alleged that during this time, before the machines had been delivered to counties, 
+employees were asked to install three software patches on all of the DREs that would be used statewide that year.
+These patches did not undergo the federal certification process for voting equipment \cite{zetter_did_2003}.
+Another former Diebold employee reported that the president of Diebold's
+election unit, Bob Urosevich, came to the warehouse himself to order the installation of
+uncertified software patches on about 5,000 machines used in DeKalb and Fulton,
+two historically Democratic counties \cite{kennedy_robert_2006}.
+
+This raised eyebrows when key contests in Georgia's 2002 election defied poll predictions.
+Longtime Democratic Senator Max Cleland was predicted to beat Republican opponent Saxby Chambliss by 3\%,
+but in fact lost his seat by a 7\% margin.
+Democratic incumbent Governor Roy Barnes was predicted to win 51\% to 40\%, but in fact lost to Republican candidate
+Sonny Perdue by 6\% \cite{freeman2006,peha_touch-and-go_2006}.
+These Republican victories were a surprise in a historically Democratic state: 
+Perdue was Georgia's first Republican governor in 130 years.
+%Diebold's partisan leanings raised eyebrows.
+%The company's CEO, Wally O'Dell, was a member of President Bush's ``Rangers and Pioneers,'' 
+%an elite group of Bush supporters who raised funds for the president's 2004 campaign.
+%At a fundraiser, O'Dell announced that
+%he was ``committed to helping Ohio deliver its electoral votes to the president'' \cite{warner_machine_2003}.
+There is no way to tell whether the outcome resulted from faulty programming or hacking, because the DREs left no paper trail.
+
+Diebold has used political connections to ensure they remained the sole voting machine provider in Georgia.
+Former Secretary of State Cathy Cox, who signed the 2002 contract with Diebold, had strong ties
+to the company.
+The election director she appointed, Kathy Rogers, 
+helped kill house bills that would have required paper records.
+In 2006, she resigned and took a job as Government Liaison at Diebold \cite{augustachronicle_voting_2006}.
+Cox's successor as Secretary of State, Karen Handel, started as a vocal supporter of paper trails and 
+acknowledged publicly that she would not interact with Rogers as Diebold's liaison due to the conflict of interest.
+Later, Handel reversed her position on paper ballots, 
+and the media revealed that she had received
+ \$25,000 in campaign contributions from employees connected with Diebold's lobbying firm, Massey \& Bowers \cite{voterga_georgia_2014}.
+Members of the state government have ignored security experts who pointed out problems with Diebold's touchscreen machines.
+
+Georgia's election security issues reach beyond voting machines.
+In 2016, a cybersecurity researcher at Oak Ridge National Laboratory, Logan Lamb, 
+discovered that he could download files from the state's ``secure'' election server.
+Among these files were the entire voter registration database for the state of Georgia,
+including sensitive personal information,
+instructional PDFs with passwords for poll workers to sign into a central server on Election Day,
+and software files for the state's ExpressPoll pollbooks that are used to verify voters' eligibility \cite{zetter_was_2018}.
+This intrusion would have allowed Lamb to alter entries in the voter registration database or the pollbooks,
+preventing some voters from casting their ballots.
+Lamb's concern about malicious hacking was not a purely theoretical:
+an NSA investigation found that Russian hackers targeted 39 states 
+in the summer and fall leading up to the 2016 presidential election \cite{riley_russian_2017}.
+
+These were not the only security concerns at the state's Center for Election Services (CES),
+housed at Kennesaw State University under a long-standing contract with the Secretary of State.
+For instance, CES was using an outdated version of their content management software, Drupal, which would allow hackers to seize control of their websites.
+A software patch had been available since 2014, but CES had not installed it.
+Lamb notified the executive director of CES, Merle King, of the problems;
+King agreed to fix them and allegedly pressed Lamb not to talk to the media or other officials about the
+security issues \cite{zetter_will_2017}.
+
+CES did not secure their server, nor did they inform anyone about the Logan's breach.
+In March 2017, another cybersecurity researcher found that CES still had not secured its files properly.
+The issue was elevated to authorities above King, 
+and it was the first time that the Secretary of State's office heard about the breach.
+In response to this poor management, the Secretary of State office signed a new agreement with Kennesaw State
+University to transfer CES to its own offices \cite{zetter_will_2017}.
+
+In July 2017, state voters and The Coalition for Good Governance filed a lawsuit against Georgia Secretary
+of State Kemp, alleging that he had ignored evidence that the state's electoral system is vulnerable to fraud and hacking.
+The plaintiffs demanded that the state use paper ballots in future elections to guard against interference \cite{curling_kemp_2018,curling_kemp_amicus_2018}.
+They requested to examine the CES servers at Kennesaw State University for evidence.
+Four days after the group filed the lawsuit, IT employees at CES wiped their servers of all prior election data.
+They later degaussed two remaining servers: key evidence was permanently erased.
+There is no proof that CES deliberately destroyed evidence, and the Secretary of
+State's office claims that the servers were wiped before they were officially served with the lawsuit in late July.
+However, Kemp's office was alerted about the lawsuit and declined to comment in the days between when the suit was filed
+and when the CES wiped its servers \cite{stahl_georgia_2017}.
+
+\subsection{The November 2018 Election}
+
+The lawsuit, \emph{Curling v. Kemp}, continued into September 2018, just before the midterm elections (and is ongoing at the time of writing).
+Testimony from the plaintiffs centered on two issues:
+security issues with DREs and the state's procedures and data handling before and after Election Day.
+The current director of CES testified that the server that each county uses to construct its ballots is 
+``air-gapped'' from the Internet, but that he uses thumb drives, email, and an online repository to store and move data---all of which expose voting systems to malware.
+A county official testified that they use analog phone lines to transmit results to the Secretary of State.
+Computer scientists have testified that these are all vulnerable channels \cite{nakashima_georgia_2018}.
+
+The state's rebuttal did not seriously address the security concerns,
+but argued that there was not enough time before the election to switch to paper ballots.
+Kemp had convened the Secure, Accessible, \& Fair Elections (SAFE)
+Commission in 2017 to select a new voting system in time for the 2020 election.
+Ultimately, U.S. District Judge Amy Totenberg ruled that the trade-off between election integrity and the feasibility
+ of making changes before the impending election tipped in favor of continued use of DREs for the 2018
+ election.
+Judge Totenberg ruled that the plaintiffs provided sufficient evidence that DRE voting
+has the potential to cause irreparable harm to voters, but that
+the burden of switching to paper ballots so close to the election could cause even more harm to voters by causing bureaucratic confusion.
+%\begin{quote}
+%In a democracy, citizens want to be assured of the integrity of the voting process,
+%that their ballots are properly counted and not diluted by inaccurate or manipulated counting,
+%and that the privacy of their votes and personal information required for voter registration
+%is maintained.
+%But citizens also depend on the orderly operation of the electoral and voting process.
+%Last-minute, wholesale changes in the voting process operating in over 2,600 precincts,
+%along with scheduled early voting arrangements, could predictably run the voting process
+%and voter participation amuck.
+%\end{quote}
+
+\begin{quote}
+Ultimately, any chaos or problems that arise in connection with a sudden rollout of a paper ballot system with
+accompanying scanning equipment may swamp the polls with work and voters---and result in voter frustration and disaffection from the voting process.
+There is nothing like bureaucratic confusion and long lines to sour a citizen.
+And that description does not even touch on whether voters themselves,
+many of whom may never have cast a paper ballot before,
+will have been provided reasonable materials to prepare them for properly executing the paper ballots.
+\end{quote}
+
+\noindent Judge Totenberg also noted that the evidence and testimony 
+``indicated that the Defendants and State election officials had buried their heads in the sand'' \cite{curling_kemp_2018}.
+
+%The November 2018 election in Georgia exemplified many of the state's election integrity issues discussed above.
+%Numerous civil rights groups urged Secretary of State Kemp to step down
+%for ethical reasons.
+%Kemp refused to resign on the grounds that other elected officials have not done so when they run for higher offices \cite{williams_georgia_2018}. 
+%Only when the reported results showed that he won did he step down.
+
+Secretary of State Kemp refused to recuse himself from overseeing the election in which he ran for Governor, 
+a clear conflict of interest \cite{williams_georgia_2018}.
+Election Day voting in November 2018 was conducted on paperless DREs.
+Machines in four polling places in Gwinnett County malfunctioned, forcing
+voters to use paper ballots, which caused some voters to wait four hours to cast their vote \cite{lockhart_voting_2018}.
+Reported vote totals were anomalous: 
+the rate of undervotes in the Lieutenant Governor (LG) contest was unusually high
+compared to historical LG races and compared to other
+statewide contests on the ballot, and the undervote rate was far higher for DREs than for
+paper ballots.
+The Coalition for Good Governance brought another lawsuit against the Georgia
+Secretary of State, calling for a redo of the LG contest \cite{coalition_crittenden_2019}.
+Statistical evidence of anomalies in this election, presented in that lawsuit, is discussed 
+below in Section~\ref{sec:ga_stats}.
+
+After the election, Kemp's office planned to certify the election results six days before state law required it,
+omitting nearly 27,000 provisional ballots.
+Provisional ballots are cast by voters whose registration or identification is in question;
+deliberately omitting provisional ballots is one way to disenfranchise voters.
+It would have ensured that the margin between Kemp and his opponent Stacey Abrams remained 
+large enough to avoid a runoff election \cite{blinder_federal_2018}.
+A civil rights group sued to delay the certification, and
+Judge Totenberg ruled against Kemp,
+ordering election officials to review the provisional ballots.
+
+The SAFE Commission was scheduled to recommend a new voting system in January, 2019.
+In early January, the Democratic Party of Georgia called on Kemp to delay any decision to purchase
+new voting systems as more misbehavior came to light:
+now-Governor Kemp appointed Charles ``Chuck'' Harper, chief lobbyist for ES\&S (the voting machine
+company that eventually acquired Diebold), as Deputy Chief of Staff in the Governor's office \cite{noauthor_SAFE_2019}.
+
+ 
+\section{Evidence of Malfunctioning DREs in 2018}\label{sec:ga_stats}
+
+While the controversy surrounding the Governor's race did
+not result in anomalous election results,
+the LG race did.
+Shortly after the November 2018 election, The Coalition for Good Governance  filed another lawsuit 
+against the new Secretary of State, demanding a redo of the LG vote.
+The plaintiffs blamed malfunctioning DREs for an unusually high number of undervotes in the LG race, but not in others \cite{coalition_crittenden_2019}.
+The judge overseeing the case initially agreed to let the plaintiffs examine the memory, but not the programming, of machines in three counties.
+She eventually dissolved this agreement and dismissed the case \cite{zetter_georgia_2019}.
+
+The plaintiffs did not specify the cause of the malfunction---faulty programming, poor electronic ballot design, hacking, or something else \cite{coalition_crittenden_2019}.
+Numerous voters reported irregularities when attempting to cast their vote for LG on DREs,
+including many who reported that the race did not appear on their ballot until they were shown the review screen.
+Without forensic evidence, it is impossible to determine exactly what happened.
+
+This section gives three lines of statistical evidence that DREs did not record every vote properly in this election.
+First, in 101 of Georgia's 159 counties,
+the rate of undervotes in the LG race was much higher among DRE votes (those cast on Election Day and advance in-person) than on (paper) absentee ballots.
+(For other statewide contests, the undervote rates are similar across modes of voting in nearly all counties.)
+Second, in Fulton County, higher differential undervote rates tended to occur in precincts where a larger percentage of registered voters were Black. 
+Third, on six of seven machines in the Winterville Train Depot polling place in Clarke County, Democrats got the majority of votes in every statewide contest, matching the overall results at the polling place.
+On the seventh machine, Republican candidates got a majority in every statewide contest.
+
+Permutation tests show that these three anomalies are 
+implausible unless something went wrong.
+Permutation tests require a minimum of assumptions, which can make them appropriate and convincing
+in situations where standard parametric tests require unrealistic or counterfactual assumptions,
+for instance, assumptions that voter preferences follow a parametric model, such as multinomial logistic.
+In contrast, the permutation tests we use treat one characteristic, such as the mode by which a ballot containing an undervote was cast or the machine on which a ballot was cast, as an arbitrary label that might as well have been
+assigned at random. 
+Software implementing the tests reported here can be found at \url{https://github.com/pbstark/GA2018}.
+
+\subsection{Undervotes for Lieutenant Governor}
+Undervotes occur when a voter selects fewer candidates in a contest than the contest rules
+allow, for instance, not voting for any candidate in a winner-take-all contest.
+The rate of undervotes tends to increase for ``down-ticket'' contests compared to major contests
+such as presidential and gubernatorial contests.
+In Georgia in 2018, the LG race had a 4\% undervote rate, while the next contest on the ballot had an undervote rate of 1.4\%.
+Moreover, this pattern appeared only in votes cast on DREs---Election Day votes and advance in-person votes.
+
+%\subsubsection{Data}
+Data were downloaded from Clarity Elections, the private sector vendor that reports official
+election results on behalf of the Georgia Secretary of State.\footnote{%
+  The fact that this crucial election function is outsourced without oversight might give
+  the reader pause.
+}\footnote{%
+\url{https://results.enr.clarityelections.com/GA/91639/222278/reports/detailxml.zip}, downloaded in January 2019.
+}
+Data included the total number of ballots cast in each county and 
+the number cast by each mode of voting (e.g. by mail) for each candidate by county.
+The file did not report ballots cast in each county by mode of voting.
+In order to calculate the number of undervotes, 
+we assumed that the total number of ballots cast by county and mode of voting equalled the maximum number of votes cast in \emph{any} contest for that county and mode of voting.
+
+%\subsubsection{Methods}
+While political preferences might differ systematically between voters who vote by mail (on paper)
+and those who vote in person (on DREs), 
+there is no reason to think that interest in a \emph{contest} should differ across those groups.
+The usability literature suggests that DREs ought to help people of disparate education and ethnicities vote correctly, in which case, the undervote rate on DREs should be \emph{lower} than the rate for paper ballots \cite{tomz2003does}.
+If so, then it is reasonable to treat the mode of voting as a label assigned randomly
+to ballots in such a way that the number of ballots cast on DREs and the number cast on paper
+is fixed (conditioned to be equal to the actual numbers).
+The number of undervotes in a contest among DRE votes then has a hypergeometric distribution.
+Under the alternative that undervotes are more likely on DREs, we would expect to see more undervotes on DREs (and fewer on paper ballots) than the hypergeometric distribution predicts.
+
+%\subsubsection{Results}
+In 101 of 159 Georgia counties, the difference in undervote rates between mail votes and DRE votes in the LG race is statistically significant at level 0.01\%.
+In contrast, in the 8~statewide contests further down the ballot,
+%contests for Secretary of State, Attorney General, Commissioner of Agriculture,
+%Commissioner of Insurance, State School Superintendent, Commissioner of Labor,
+%Public Service Commission District 3, and Public Service Commission District 5,
+the difference is statistically significant in no more than 5 counties.
+Table~\ref{tab:ltgov} shows the counts.
+
+\begin{table}[ht]
+\caption{Counties with statistically significant ($p<0.0001$) disparities in undervote rates between paper ballots and DREs.}
+\begin{center}
+\begin{tabular}{|l|l|}
+Contest						 & Counties with significant \\
+             						& undervote rate disparities \\
+ \hline
+Lt. Governor 					& 101 \\
+Secretary of State 				& 4 \\
+Attorney General				& 4 \\
+Commissioner of Agriculture		& 5 \\
+Commissioner of Insurance		& 4 \\
+State School Superintendent		& 5 \\
+Commissioner of Labor			& 2 \\
+Public Service Commission District 3 & 4 \\
+Public Service Commission District 5 & 4
+\end{tabular}
+\end{center}
+\label{tab:ltgov}
+\end{table}%
+
+
+\subsection{Undervotes and Race in Fulton County}
+%\subsubsection{Data and methods}
+Undervote rates on touchscreen voting machines
+were reported to be higher in predominantly Black precincts across the state \cite{harriot_thousands_2019}.
+If so, that is evidence that security and usability issues with DREs disparately impact
+ historically disadvantaged groups.
+We investigated this issue in Fulton County, 
+which includes most of the capital, Atlanta,
+and had over 424,000 voters in November 2018.
+
+Precinct-level reported vote totals were downloaded from the Clarity Election site
+that reports official results for the Georgia Secretary of State.\footnote{%
+\url{https://results.enr.clarityelections.com/GA/Fulton/91700/221530/reports/detailxml.zip}, downloaded in January 2019.
+}
+Data included total votes cast for each candidate by each mode of voting, in each precinct within Fulton County.
+As with the statewide data, we estimated the number of undervotes by subtracting the votes
+from the maximum number of votes in any contest, by mode of voting and precinct.
+
+Voter turnout data were downloaded from the Secretary of State's website.\footnote{%
+\url{http://sos.ga.gov/admin/uploads/PRECINCT_Nov_2018.zip}, downloaded in January 2019.
+}%
+From these data, we computed the percentage of registered voters who were Black in each precinct.
+
+A permutation test was used to assess the correlation
+between the difference in undervote rates between voters who used paper ballots and voters who voted electronically and the percentage of registered voters who were Black.
+Of the 373~precincts in Fulton County, we restricted analysis to the 302~precincts
+in which at least 10~people voted electronically and at least 10 voted on paper.
+
+%\subsubsection{Results}
+The undervote rate was substantially lower for voters who used paper ballots than for voters who voted 
+electronically, by an amount that---on average---was larger in precincts with a larger percentage of
+Black registered voters.
+Table~\ref{tab:fulton} shows the correlation between the difference in undervote rates and the percentage of registered voters who are Black.
+$p$-values are for randomized permutation tests with 10,000 replications,
+carried out using the Python \texttt{permute} package.\footnote{%
+\url{http://statlab.github.io/permute}
+}%
+Small $p$-values for multiple statewide contests could explained by
+voter behavior; prior research suggests that Black voters may intentionally undervote at a higher rate than other voters, and may cast valid votes at a rate that is lower than the rate for the general electorate \cite{herron2003overvoting,tomz2003does}.
+However, it is notable that the correlation for the Lieutenant Governor's contest is more than twice what it is for any other contest. 
+
+\begin{table}[ht]
+\caption{Correlation between the difference in undervote rates and percentage of registered voters who are Black, for the 10 statewide contests in Georgia in November 2018, in Fulton County.}
+\begin{center}
+\begin{tabular}{|l|r|r|}
+Contest					        & correlation & $p$-value \\
+ \hline
+Governor						& -0.134       & 0.9903 \\
+Lt. Governor 					& 0.557        & 0.0001 \\
+Secretary of State 				& 0.092        & 0.0582 \\
+Attorney General				& 0.078        & 0.0902 \\
+Commissioner of Agriculture		& 0.207        & 0.0003 \\
+Commissioner of Insurance		& 0.246        & 0.0001 \\
+State School Superintendent		& 0.154        & 0.0050 \\
+Commissioner of Labor			& 0.041        & 0.2376 \\
+Public Service Commission District 3 & 0.042       & 0.2329 \\
+Public Service Commission District 5 & 0.125       & 0.0145
+\end{tabular}
+\end{center}
+\label{tab:fulton}
+\end{table}%
+
+
+
+
+\subsection{Party Preferences in Winterville Train Depot Polling Place}
+%\subsubsection{Data}
+A citizen photographed printed poll tapes from the seven DRE machines in the Winterville Train Depot
+polling place in Clarke County.
+The photographs were transcribed to CSV and double checked by a second person.\footnote{%
+The data were submitted as evidence in \cite{coalition_crittenden_2019}.
+}
+
+The Winterville Train Depot polling place is just one polling place in Georgia where a member of the public photographed
+poll tapes posted at the precinct after the polls closed.
+It was not selected at random, but neither was there particular reason to suspect problems
+there. 
+There is no reason to believe that problems are confined to this polling place---where then-Secretary of State Kemp himself voted---but even if they were, any anomaly is of concern.
+
+The DREs in the precinct recorded comparable numbers of voters (117, 135, 131, 133, 135, 144, 135).
+In this polling place, Democratic candidates won a majority in all ten statewide contests.
+Every DRE reported a majority of votes for the Democratic candidate in every statewide contest 
+except machine~3, which reported a majority for the Republican candidate in every statewide contest.
+
+
+%\subsubsection{Methods}
+If voters were directed to DREs as if at random, then the number of voters who used different machines should be roughly equal, as should the percentage of votes for each candidate.
+Conditional on the number of ballots on each machine and the total number of votes for each candidate across machines,
+all permutations of votes across machines are equally likely under the null hypothesis.
+We performed a two-sided permutation test using the difference between the expected and actual fraction of Republican votes in each contest as the test statistic.
+Permutations were done using the \texttt{cryptorandom} pseudo-random number generator for Python\footnote{%
+\url{http://statlab.github.io/cryptorandom}
+}. %
+The $p$-values for different contests were combined using Fisher's combination function to obtain a global $p$-value on the assumption that the distribution of Fisher's combining function under the null hypothesis is chi-square.
+That would be true if votes in different contests were independent; however, voters tend to vote along party lines.
+If ballot-level data were available, a Fisher's combining function could be calibrated to take that correlation into account.
+However, the poll tapes give only totals by contest.
+Hence, while $p$-values for individual contests are on a firm statistical footing, the global $p$-value should be viewed as suggestive rather than precise.
+
+%\subsubsection{Results}
+On the assumption that voters were directed to DREs as if at random, 
+the chance any of the seven machines would show disparities as large as machine~3 did in individual contests ranges 
+from less than 1\% to approximately 15\%.  
+Seven of the ten values are significant at level 5\% or below; see Table~\ref{tab:winterville}.
+The global $p$-value for the ten tests is 0.00009\%.\footnote{%
+As mentioned above, the assumptions under which Fisher's combining function has a chi-square distribution may not hold, so the global $p$-value should be viewed as suggestive.}
+
+\begin{table}[ht]
+\caption{Consistency of results across DREs in Winterville Train Station Polling Place and consistency of results if D and R were flipped on machine~3.}
+\begin{center}
+\begin{tabular}{|l|l|l|}
+Contest 						& $p$-value  & $p$-value if machine 3 \\
+             						& 		    & were flipped\\
+ \hline
+Governor						& 0.114 & 0.464 \\
+Lt. Governor 					& 0.025 & 0.795 \\
+Secretary of State 				& 0.018 & 0.450 \\
+Attorney General				& 0.151 & 0.543 \\
+Commissioner of Agriculture		& 0.026 & 0.734 \\
+Commissioner of Insurance		& 0.030 & 0.604 \\
+State School Superintendent		& 0.097 & 0.807 \\
+Commissioner of Labor			& 0.008 & 0.797 \\
+Public Service Commission District 3 & 0.046 & 0.280 \\
+Public Service Commission District 5 & 0.025 & 0.939
+\end{tabular}
+\end{center}
+\label{tab:winterville}
+\end{table}%
+
+These results are entirely driven by the results on machine~3.
+If the Democratic and Republican party labels were flipped on that machine, the anomaly disappears,
+and the global $p$-value for the ten contests becomes 97\%.
+For individual contests, no $p$-value is then below $0.280$,
+compared with values as small as $0.008$ (and seven values below 5\%) for the actual poll tapes.
+See Table~\ref{tab:winterville}.  
+%
+%\begin{table}[ht]
+%\caption{Consistency of Results across DREs in Winterville Train Station Polling Place, if D and R were flipped on machine 3.}
+%\begin{center}
+%\begin{tabular}{|l|l|}
+%Contest						 & $p$-value \\
+% \hline
+%Governor						& 0.464 \\
+%Lt. Governor 					& 0.795 \\
+%Secretary of State 				& 0.450 \\
+%Attorney General				& 0.543 \\
+%Commissioner of Agriculture		& 0.734 \\
+%Commissioner of Insurance		& 0.604 \\
+%State School Superintendent		& 0.807 \\
+%Commissioner of Labor			& 0.797 \\
+%Public Service Commission District 3 & 0.280 \\
+%Public Service Commission District 5 & 0.939
+%\end{tabular}
+%\end{center}
+%\label{tab:winterville2}
+%\end{table}%
+
+These tests strongly suggest that machine~3 had some software or hardware problem: 
+misconfiguration, error, defect, hack, or malfunction. 
+The most plausible explanation is that misconfiguration caused votes 
+for Republican candidates to be recorded as votes for Democratic candidates, and vice versa.
+
+
+\section{Conclusion}
+The 2018 midterms demonstrated that election integrity in Georgia remains fraught.
+In the weeks leading up to the election and for weeks after, citizens challenged the
+Secretary of State's treatment of provisional ballots and voter registrations,
+alleging that these practices were intended to disenfranchise minority voters.
+Touchscreen DRE voting machines were used statewide, even after
+security experts voiced their concerns and a nonprofit organization sued the state to replace DREs
+with hand-marked paper ballots.
+There is evidence that some DREs malfunctioned in the election;
+statistical anomalies suggest that DREs failed to record a large percentage of votes cast in the Lieutenant Governor's race, and that ``missing votes'' were more frequent in jurisdictions
+with large African American populations \cite{harriot_thousands_2019}.
+The Secretary of State has refused to investigate these issues.
+Some particular anomalies (i.e., the Winterville Train Depot data) are most easily explained by 
+``vote flipping,'' in which the DRE recorded votes for one candidate
+as votes for the candidate's opponent.
+
+Lawmakers are poised to replace the state's DREs with a new system:
+either hand-marked paper ballots with optical scanners, using
+touchscreen ballot-marking devices (BMDs) for accessibility, or BMDs for all voters.
+In February 2019, the state legislature voted to purchase BMDs statewide \cite{niesse_bill_2019}.
+While BMDs do produce a paper record, they are more expensive than opscan systems,\footnote{%
+  The State of Georgia has claimed otherwise, but their analysis was deeply flawed, omitting costs associated with BMDs and overstating the cost of printing ballots, among other things. See \cite{perez18}.
+  }%
+and they are neither as reliable nor as secure as hand-marked
+paper ballots and opscan systems.
+Among other issues, BMD malfunctions can prevent voting on Election Day;
+inadequate provisioning of equipment can produce long lines;
+there is evidence that voters cannot and do not reliably verify their BMD selections; 
+and BMDs require the same trust in software as DREs, with no practical recourse if machines malfunction and little possibility that outcome-changing errors will be detected \cite{appel_bmds_2019,stark_bmds_2019}.
+The SAFE Commission's only security expert, Prof.~Wenke Lee, warned against BMDs.
+
+House Minority Leader Bob Trammell expressed his stance on the evidence
+for hand-marked paper ballots \cite{niesse_bill_2019}:
+ 
+\begin{quote}
+It's unequivocally clear that cybersecurity experts have expressed concerns about the ballot-marking devices.
+It comes down to whether you think the opinion of election officials \textellipsis
+is more important than the issue of credentialed experts in the field talking about a material risk to the voting process.
+\end{quote}
+ 
+
+
+\bibliography{references}
+
+
+
+\end{document}
