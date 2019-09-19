@@ -26,15 +26,81 @@ header-includes:
 
 ---
 
+**Kellie and Philip are very grateful to Vanessa for giving this talk!**
+
+---
+
 
 ## GA has a long history of voter suppression
 
-+ 
++ Voting Rights Act (1965) 
 
 . . .
 
 +
 
+
+. . .
+
++
+---
+
+## HAVA and DREs
+
+---
+
+## Kennesaw State
+
++ Contractor for GA to program voting machines, etc.
++ Director, Merle King, notable apologist for DREs
+
+---
+
+## Logan Lamb
+
++ Discovered Kennesaw State's Center for Election server had critical election data (voter records, passwords, etc.) 
+
+---
+
+## VR Database
+
+
+---
+
+## Curling et al. Suit, 2016 (Coalition for Good Governance)
+
+Abrams v. Kemp for Gov.
+
+Kemp was SoS; didn't recuse himself
+
+Closed polling places; signature rejections; etc.
+
+---
+
+## CGG Suit, 2018
+
++ Focuses on Lt. Gov contest
+
++ Novel argument: "SoS doesn't conduct elections"
+    - programs/configures the machines (previously subcontracted to Kennesaw)
+    - collects & reports the results (subcontracted to Clarity/Scytl)
+    
++ Novel argument: "kill the messenger"
+    - Plaintiffs and Dem party told SoS about breaches/vulnerabilities; SoS accused them of hacking
+    
++ Curious behavior
+    - Wiped the Kennesaw State servers, the only potential source of forensic evidence
+
+---
+
+## Anomalous results
+
++ High undervote rate, Much higher than down-ticket contests
+
++ Undervote rate varied substantially by mode of voting
+
+    - Higher rate for ballots cast on DREs
+    - Higher in precincts with larger percentage of Black voters
 
 ---
 
@@ -51,6 +117,10 @@ State School Superintendent		| 5 \\
 Commissioner of Labor			| 2 \\
 Public Service Commission District 3 | 4 |
 Public Service Commission District 5 | 4 |
+
+---
+
+Permutation test: no parametric assumptions, no assumptions about voter preferences
 
 
 ---
