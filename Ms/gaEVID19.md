@@ -12,7 +12,7 @@ author:
 - Philip B. Stark
 - Vanessa Teague
 institute: 
-- Pinterest
+- University of California, Berkeley
 - University of California, Berkeley
 - University of Melbourne
 date:  1--5 October 2019
@@ -30,22 +30,44 @@ header-includes:
 
 ---
 
+## What happened in GA, 2018?
+
++ Lead-up to the election was fraught:
+    - allegations that Secretary of State Kemp tried to suppress Black voters
+    - a history of insecure election data
+    - a lawsuit to require paper ballots over the standard DRE voting machines
+
++ The 2018 election produced anomalous results that could have been caused by malfunctioning, misprogrammed, or hacked election technology, including DREs
+
+---
 
 ## GA has a long history of voter suppression
 
 + Voting Rights Act (1965) 
+    - Prevents racial discrimination in voting
+    - Section 5 required certain states to get "preclearance" before changing voting procedures that might affect minority voters
 
-. . .
++ Shelby County v. Holder (2013) overturned the preclearance rule
+    - Since then, election officials in Georgia have closed nearly 8% of the state's polling places
 
-+
++ SoS Kemp's "exact match" law: requires name on voter registration application to exactly match the legal name
+    - Any discrepancy renders the registration "pending".
+    - In 2018, 53,000 voter registrations were pending. 70% were from Black voters.
 
-
-. . .
-
-+
 ---
 
-## HAVA and DREs
+## Help America Vote Act (HAVA) and DREs
+
++ HAVA passed in 2002 in response to serious problems with punchcard voting machines in the 2000 election
+    - Gave states funding to upgrade from punchcard and lever systems, among other requirements
+    - Many states used funding to purchase touchscreen DREs
+
++ Premier (later ES&S) is the DRE provider in Georgia
+    - Evidence that the company had strong ties to the Republican party and state officials
+
++ The AccuVote-TSx machines were shown to have significant problems
+    - elaborate
+
 
 ---
 
