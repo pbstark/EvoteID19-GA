@@ -73,33 +73,33 @@ header-includes:
 
 ## Kennesaw State
 
-+ Contractor for GA to program voting machines, etc.
-+ Director, Merle King, notable apologist for DREs
++ Contractor for GA to program voting machines, house their voter registration database, etc.
+    - Director, Merle King, notable apologist for DREs
+
++ 2017: Logan Lamb discovered he could access Kennesaw State's Center for Election server, with critical election data (voter records, passwords, etc.) 
+    - entire voter registration database for the state of Georgia, including sensitive personal information
+    -  instructional PDFs with pass- words for poll workers to sign into a central server on Election Day
+    - software files for the state’s ExpressPoll pollbooks
+    - Lamb could have altered data, preventing some voters from voting
 
 ---
 
-## Logan Lamb
+## Curling et al. v. Kemp, 2016-2018
 
-+ Discovered Kennesaw State's Center for Election server had critical election data (voter records, passwords, etc.) 
++ Lawsuit was seen in court just months before the 2018 election
+    - Pointed to Kennesaw State's poor security and history of issues with DREs
 
----
++ Curious behavior
+    - Wiped the Kennesaw State servers, the only potential source of forensic evidence
 
-## VR Database
++ SoS Kemp ran against Stacey Abrams for Governor
+    - Kemp was SoS overseeing the election; didn't recuse himself
+    - Voter suppression continued: closed polling places, signature rejections, exact match law, etc.
 
-
----
-
-## Curling et al. Suit, 2016 (Coalition for Good Governance)
-
-Abrams v. Kemp for Gov.
-
-Kemp was SoS; didn't recuse himself
-
-Closed polling places; signature rejections; etc.
 
 ---
 
-## CGG Suit, 2018
+## Coalition for Good Governance (CGG) Suit, 2018
 
 + Focuses on Lt. Gov contest
 
@@ -109,20 +109,18 @@ Closed polling places; signature rejections; etc.
     
 + Novel argument: "kill the messenger"
     - Plaintiffs and Dem party told SoS about breaches/vulnerabilities; SoS accused them of hacking
-    
-+ Curious behavior
-    - Wiped the Kennesaw State servers, the only potential source of forensic evidence
 
 ---
 
 ## Anomalous results
 
-+ High undervote rate, Much higher than down-ticket contests
++ High undervote rate, much higher than down-ticket contests
 
 + Undervote rate varied substantially by mode of voting
-
     - Higher rate for ballots cast on DREs
     - Higher in precincts with larger percentage of Black voters
+
++ Evidence of unusual DRE behavior, using data from poll tapes
 
 ---
 
@@ -132,11 +130,11 @@ Contest			|  Counties w significant disparities |
 :---------------|------------------------------------:|
 Lt. Governor 					| 101 |
 Secretary of State 				| 4  |
-Attorney General				| 4 \\
-Commissioner of Agriculture		| 5 \\
-Commissioner of Insurance		| 4 \\
-State School Superintendent		| 5 \\
-Commissioner of Labor			| 2 \\
+Attorney General				| 4 |
+Commissioner of Agriculture		| 5 |
+Commissioner of Insurance		| 4 |
+State School Superintendent		| 5 |
+Commissioner of Labor			| 2 |
 Public Service Commission District 3 | 4 |
 Public Service Commission District 5 | 4 |
 
