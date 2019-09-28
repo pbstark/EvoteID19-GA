@@ -120,7 +120,17 @@ header-includes:
     - Higher rate for ballots cast on DREs
     - Higher in precincts with larger percentage of Black voters
 
-+ Evidence of unusual DRE behavior, using data from poll tapes
++ Evidence of unusual DRE behavior, using data from poll tapes in Winterville Train Depot precinct
+
+---
+
+## Differential Undervote Rate in Lt. Gov Contest
+
++ Hypothesis: the undervote rate in the Lt. Governor contest was significantly higher for DRE votes than for paper (absentee by mail) votes
+
++ Statistical test: assume that the number of undervotes in each contest is fixed, but randomly distributed across modes of voting (hypergeometric)
+
++ Data: reported vote totals by county and mode of voting, publically available from GA SoS website
 
 ---
 
@@ -140,12 +150,20 @@ Public Service Commission District 5 | 4 |
 
 ---
 
-Permutation test: no parametric assumptions, no assumptions about voter preferences
+## Differential Undervote Rates and Black Voters
 
++ Data: precinct-level reported vote totals and voter registration in Fulton County
+
++ Hypothesis: the differential undervote rate by mode of voting in the Lt. Governor contest was significantly higher in precincts with a larger proportion of registered Black voters
+
++ Permutation test: 
+    - under the null, the differential undervote rate is independent of race
+    - randomly permute differential undervote rate and compute correlation with percentage of registered Black voters by precinct
 
 ---
 
-## Winterville Train Depot (SoS Kemp's precinct)
+## Differential Undervote Rates and Black Voters
+
 
 Contest					        | correlation | $p$-value |
 |:------------------------------|------------:|---------:|
@@ -160,7 +178,45 @@ Commissioner of Labor			| 0.041       | 0.2376 |
 Public Service Commission District 3 | 0.042  | 0.2329 |
 Public Service Commission District 5 | 0.125  | 0.0145 |
 
+---
 
+## Winterville Train Depot (SoS Kemp's precinct)
 
++ Citizen photographed poll tapes (total votes cast for each candidate on each machine) after precinct closed 
 
++ Primarily Democratic (D) precinct; 6 of 7 DREs showed majority votes D
+    - Machine 3 showed majority votes for R in every contest
+    - What are the chances?
+
++ Permutation test: no parametric assumptions, no assumptions about voter preferences
+    - Assume voters were directed to machines at random
+    - Condition on the total number of votes per machine + total number of votes for each candidate
+    - Simulate distributing votes across machines
+
+---
+
+## Winterville Train Depot (SoS Kemp's precinct)
+
+Contest					        | $p$-value | $p$-value if machine 3 were flipped|
+|:------------------------------|------------:|---------:|
+Governor						| 0.114      | 0.464 |
+Lt. Governor 					| 0.025       | 0.795 |
+Secretary of State 				| 0.018       | 0.450 |
+Attorney General				| 0.151       | 0.543 |
+Commissioner of Agriculture		| 0.026       | 0.734 |
+Commissioner of Insurance		| 0.030       | 0.604 |
+State School Superintendent.    | 0.097       | 0.807 |
+Commissioner of Labor			| 0.008       | 0.797 |
+Public Service Commission District 3 | 0.046  | 0.280 |
+Public Service Commission District 5 | 0.025  | 0.939 |
+
+---
+
+## Conclusions
+
++ Statistical anomalies suggest that DREs failed to record a large percentage of votes in the Lt. Governor contest
+
++ Evidence that some DREs malfunctioned in the election -- Winterville Train Depot is an example of potential "vote flipping"
+
++ GA lawmakers are poised to replace DREs with BMDs for all voters
 
