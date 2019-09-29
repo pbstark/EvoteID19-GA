@@ -34,8 +34,10 @@ header-includes:
 
 + Lead-up to the election was fraught:
     - allegations that Secretary of State Kemp tried to suppress Black voters
-    - a history of insecure election data
-    - a lawsuit to require paper ballots over the standard DRE voting machines
+        + closed polling places
+        + purged voter rolls
+    - history of insecure election data
+    - lawsuit to require paper ballots over the standard DRE voting machines
 
 + The 2018 election produced anomalous results that could have been caused by malfunctioning, misprogrammed, or hacked election technology, including DREs
 
@@ -62,24 +64,27 @@ header-includes:
     - Gave states funding to upgrade from punchcard and lever systems, among other requirements
     - Many states used funding to purchase touchscreen DREs
 
-+ Premier (later ES&S) is the DRE provider in Georgia
-    - Evidence that the company had strong ties to the Republican party and state officials
++ Premier (later ES&S) is DRE vendor for Georgia
+    - Ties to the Republican party and state officials, incl. member of Kemp's administration
+    - Lied to congress about remote desktop software, radios, etc.
+    - Fined $2.9MM in Philadelphia
 
 + The AccuVote-TSx machines were shown to have significant problems
-    - elaborate
 
 
 ---
 
 ## Kennesaw State
 
-+ Contractor for GA to program voting machines, house their voter registration database, etc.
++ Contractor for GA to program voting machines, host VRDB, etc.
     - Director, Merle King, notable apologist for DREs
+
+. . .
 
 + 2017: Logan Lamb discovered he could access Kennesaw State's Center for Election server, with critical election data (voter records, passwords, etc.) 
     - entire voter registration database for the state of Georgia, including sensitive personal information
-    -  instructional PDFs with pass- words for poll workers to sign into a central server on Election Day
-    - software files for the state’s ExpressPoll pollbooks
+    - instructional PDFs with passwords for poll workers to sign into a central server on Election Day
+    - software files for GA's ExpressPoll pollbooks
     - Lamb could have altered data, preventing some voters from voting
 
 ---
@@ -95,7 +100,6 @@ header-includes:
 + SoS Kemp ran against Stacey Abrams for Governor
     - Kemp was SoS overseeing the election; didn't recuse himself
     - Voter suppression continued: closed polling places, signature rejections, exact match law, etc.
-
 
 ---
 
@@ -126,7 +130,9 @@ header-includes:
 
 ## Differential Undervote Rate in Lt. Gov Contest
 
-+ Hypothesis: the undervote rate in the Lt. Governor contest was significantly higher for DRE votes than for paper (absentee by mail) votes
++ Hypothesis: the undervote rate in the Lt. Governor contest did not depend on mode of voting
+
++ Alternative: undervote rate different for DREs vs. paper (absentee by mail) ballots
 
 + Statistical test: assume that the number of undervotes in each contest is fixed, but randomly distributed across modes of voting (hypergeometric)
 
@@ -148,13 +154,17 @@ Commissioner of Labor			| 2 |
 Public Service Commission District 3 | 4 |
 Public Service Commission District 5 | 4 |
 
+Significance: $p \le 0.0001$
+
 ---
 
 ## Differential Undervote Rates and Black Voters
 
 + Data: precinct-level reported vote totals and voter registration in Fulton County
 
-+ Hypothesis: the differential undervote rate by mode of voting in the Lt. Governor contest was significantly higher in precincts with a larger proportion of registered Black voters
++ Hypothesis: precinct differential undervote rate in Lt. Governor contest not associated with voter ethnicity
+
++ Alternative: precinct differential undervote rate in Lt. Governor contest associated with percentage of Black voters in precinct
 
 + Permutation test: 
     - under the null, the differential undervote rate is independent of race
@@ -182,16 +192,34 @@ Public Service Commission District 5 | 0.125  | 0.0145 |
 
 ## Winterville Train Depot (SoS Kemp's precinct)
 
-+ Citizen photographed poll tapes (total votes cast for each candidate on each machine) after precinct closed 
+::: columns
 
-+ Primarily Democratic (D) precinct; 6 of 7 DREs showed majority votes D
-    - Machine 3 showed majority votes for R in every contest
-    - What are the chances?
+:::: column
 
-+ Permutation test: no parametric assumptions, no assumptions about voter preferences
-    - Assume voters were directed to machines at random
-    - Condition on the total number of votes per machine + total number of votes for each candidate
-    - Simulate distributing votes across machines
+![winterville.png](./winterville.png)
+
+:::: 
+
+:::: column
+
++ 76 citizen photos of poll tapes
+
+. . .
+
++ similar #voters used all 7
+    - 6 of 7 DREs showed majority for D in every statewide contest
+    - 1 showed majority for R in every statewide contest
+    - surprising, if machines worked properly?
+
+. . .
+
++ Permutation test: voters were directed to machines "as if" at random
+    - condition on votes per machine & per candidate
+    - statistic: largest share discrepancy (D or R) across machines
+
+::::
+
+:::
 
 ---
 
@@ -199,7 +227,7 @@ Public Service Commission District 5 | 0.125  | 0.0145 |
 
 Contest					        | $p$-value | $p$-value if machine 3 were flipped|
 |:------------------------------|------------:|---------:|
-Governor						| 0.114      | 0.464 |
+Governor						| 0.114       | 0.464 |
 Lt. Governor 					| 0.025       | 0.795 |
 Secretary of State 				| 0.018       | 0.450 |
 Attorney General				| 0.151       | 0.543 |
@@ -214,9 +242,13 @@ Public Service Commission District 5 | 0.025  | 0.939 |
 
 ## Conclusions
 
-+ Statistical anomalies suggest that DREs failed to record a large percentage of votes in the Lt. Governor contest
++ Evidence that DREs failed to record a large percentage of votes in Lt. Governor contest
 
-+ Evidence that some DREs malfunctioned in the election -- Winterville Train Depot is an example of potential "vote flipping"
++ Evidence that some DREs malfunctioned: lost votes and/or flipped votes
 
 + GA lawmakers are poised to replace DREs with BMDs for all voters
+
++ Procurement process ignored advice of the only technologist on the committee
+
++ Lawsuit seeks to block universal use of BMDs in favor of HMPB
 
